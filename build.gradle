@@ -1,0 +1,72 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.1'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'com.google.cloud.tools.appengine' version '2.4.4'
+}
+
+group = 'io.eternalwind'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+appengine {
+	stage {
+		artifact = bootJar.archiveFile.get().asFile
+	}
+
+	deploy {
+		projectId = "GCLOUD_CONFIG"
+		version = "GCLOUD_CONFIG"
+	}
+}
+
+jar {
+    enabled = false
+}
+
+ext {
+	set('springCloudGcpVersion', "4.5.1")
+	set('springdocVersion', "2.0.2")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'com.google.cloud:spring-cloud-gcp-starter-data-firestore'
+	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:testcontainers'
+	testImplementation 'org.testcontainers:gcloud'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.google.cloud:spring-cloud-gcp-dependencies:${springCloudGcpVersion}"
+	}
+
+	dependencies {
+		dependency "org.springdoc:springdoc-openapi-starter-webflux-ui:${springdocVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

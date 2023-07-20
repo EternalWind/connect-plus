@@ -1,4 +1,4 @@
-package io.eternalwind.connectplus.controllers;
+package io.eternalwind.connectplus.presentation.controllers;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.eternalwind.connectplus.controllers.viewmodels.GetLatestMsgVMs.ForumMessage;
-import io.eternalwind.connectplus.controllers.viewmodels.GetLatestMsgVMs.LatestMessages;
-import io.eternalwind.connectplus.controllers.viewmodels.GetLatestMsgVMs.UserMessage;
-import io.eternalwind.connectplus.controllers.viewmodels.JoinForumVMs.Join;
-import io.eternalwind.connectplus.controllers.viewmodels.ListForumVMs.Forum;
-import io.eternalwind.connectplus.controllers.viewmodels.MsgToUserVMs.SendingMessage;
-import io.eternalwind.connectplus.controllers.viewmodels.MsgToUserVMs.SentMessage;
-import io.eternalwind.connectplus.controllers.viewmodels.SendMsgToForumVMs.SendingForumMessage;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.GetLatestMsgVMs.ForumMessage;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.GetLatestMsgVMs.LatestMessages;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.GetLatestMsgVMs.UserMessage;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.JoinForumVMs.Join;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.ListForumVMs.Forum;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.MsgToUserVMs.SendingMessage;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.MsgToUserVMs.SentMessage;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.SendMsgToForumVMs.SendingForumMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

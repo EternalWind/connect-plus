@@ -1,4 +1,4 @@
-package io.eternalwind.connectplus.controllers;
+package io.eternalwind.connectplus.presentation.controllers;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.eternalwind.connectplus.controllers.viewmodels.GetRecommendedUserVMs.RecommendedUser;
-import io.eternalwind.connectplus.controllers.viewmodels.LikeUserVMs.Like;
-import io.eternalwind.connectplus.controllers.viewmodels.ListMatchedUserVMs.MatchedUser;
-import io.eternalwind.connectplus.models.Sex;
+import io.eternalwind.connectplus.domain.models.Sex;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.GetRecommendedUserVMs.RecommendedUser;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.LikeUserVMs.Like;
+import io.eternalwind.connectplus.presentation.controllers.viewmodels.ListMatchedUserVMs.MatchedUser;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

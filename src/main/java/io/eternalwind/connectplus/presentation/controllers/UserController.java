@@ -1,4 +1,4 @@
-package io.eternalwind.connectplus.controllers;
+package io.eternalwind.connectplus.presentation.controllers;
 
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

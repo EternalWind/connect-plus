@@ -1,6 +1,6 @@
-package io.eternalwind.connectplus.controllers.viewmodels;
+package io.eternalwind.connectplus.presentation.controllers.viewmodels;
 
-import io.eternalwind.connectplus.models.Sex;
+import io.eternalwind.connectplus.domain.models.Sex;
 
 public class SignUpVMs {
     public static record NewUser(String username, String userPk, Sex selfBioSex, Sex selfPsySex) {

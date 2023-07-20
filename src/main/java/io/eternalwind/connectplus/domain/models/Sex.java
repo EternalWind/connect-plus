@@ -1,4 +1,4 @@
-package io.eternalwind.connectplus.models;
+package io.eternalwind.connectplus.domain.models;
 
 public enum Sex {
     MALE,

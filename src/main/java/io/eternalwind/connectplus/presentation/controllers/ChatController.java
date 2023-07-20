@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.eternalwind.connectplus.presentation.controllers.viewmodels.GetLatestMsgVMs.ForumMessage;
-import io.eternalwind.connectplus.presentation.controllers.viewmodels.GetLatestMsgVMs.LatestMessages;
-import io.eternalwind.connectplus.presentation.controllers.viewmodels.GetLatestMsgVMs.UserMessage;
-import io.eternalwind.connectplus.presentation.controllers.viewmodels.JoinForumVMs.Join;
-import io.eternalwind.connectplus.presentation.controllers.viewmodels.ListForumVMs.Forum;
-import io.eternalwind.connectplus.presentation.controllers.viewmodels.MsgToUserVMs.SendingMessage;
-import io.eternalwind.connectplus.presentation.controllers.viewmodels.MsgToUserVMs.SentMessage;
-import io.eternalwind.connectplus.presentation.controllers.viewmodels.SendMsgToForumVMs.SendingForumMessage;
+import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.ForumMessage;
+import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.LatestMessages;
+import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.UserMessage;
+import io.eternalwind.connectplus.presentation.viewmodels.JoinForumVMs.Join;
+import io.eternalwind.connectplus.presentation.viewmodels.ListForumVMs.Forum;
+import io.eternalwind.connectplus.presentation.viewmodels.MsgToUserVMs.SendingMessage;
+import io.eternalwind.connectplus.presentation.viewmodels.MsgToUserVMs.SentMessage;
+import io.eternalwind.connectplus.presentation.viewmodels.SendMsgToForumVMs.SendingForumMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

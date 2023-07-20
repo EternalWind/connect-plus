@@ -1,4 +1,4 @@
-package io.eternalwind.connectplus.presentation.controllers.viewmodels;
+package io.eternalwind.connectplus.presentation.viewmodels;
 
 import java.time.ZonedDateTime;
 import java.util.List;

@@ -31,10 +31,6 @@ jar {
     enabled = false
 }
 
-bootJar {
-   archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
-}
-
 ext {
 	set('springCloudGcpVersion', "4.5.1")
 	set('springdocVersion', "2.0.2")

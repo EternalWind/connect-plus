@@ -24,4 +24,4 @@ jobs:
               uses: 'google-github-actions/deploy-appengine@v1'
               with:
                 project_id: 'mira-392912'
-                deliverables: './src/main/appengine/app.yaml'
+                deliverables: '${{ github.workspace }}/src/main/appengine/app.yaml'

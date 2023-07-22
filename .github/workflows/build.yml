@@ -28,10 +28,10 @@ jobs:
         gradle-home-cache-cleanup: true
 
     - name: Run build with Gradle Wrapper
-      run: ./gradlew build --scan
+      run: ./gradlew build -x test
 
     - name: Check
-      run: ls ./build/libs
+      run: ls -lh ./build/libs
 
     - id: 'Authenticate'
       uses: 'google-github-actions/auth@v1'

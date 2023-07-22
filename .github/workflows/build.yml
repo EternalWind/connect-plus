@@ -28,19 +28,16 @@ jobs:
         gradle-home-cache-cleanup: true
 
     - name: Run build with Gradle Wrapper
-      run: ./gradlew build -x test
+      run: ./gradlew build --scan
 
     - name: Check
       run: ls -lh ./build/libs
 
-    - id: 'Authenticate'
+    - name: Authenticate
       uses: 'google-github-actions/auth@v1'
       with:
         workload_identity_provider: 'projects/1037093614604/locations/global/workloadIdentityPools/github-connection-plus-default/providers/github-connection-plus-provider'
         service_account: 'mira-builder-103@mira-392912.iam.gserviceaccount.com'
     
-    - id: 'Deploy'
-      uses: 'google-github-actions/deploy-appengine@v1'
-      with:
-        project_id: 'mira-392912'
-        deliverables: '${{ github.workspace }}/src/main/appengine/app.yaml'
+    - name: Deploy
+      run: ./gradlew appengineDeploy

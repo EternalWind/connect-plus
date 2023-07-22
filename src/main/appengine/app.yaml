@@ -1,4 +1,3 @@
 service: connect-plus
 runtime: java17
 instance_class: F1
-entrypoint: java -Xmx64m -jar ./build/libs/connect-plus.jar

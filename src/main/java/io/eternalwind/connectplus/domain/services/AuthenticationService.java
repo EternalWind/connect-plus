@@ -15,14 +15,11 @@ public class AuthenticationService {
 
     public Mono<Pair<UUID, String>> authenticate(String username, String authToken) {
         return userRepository.findByUsername(username)
-                .map(user -> Pair.of(UUID.fromString(user.getId()), authenticate(user, authToken)));
+                .map(user -> Pair.of(UUID.fromString(user.getId()), authenticate(user, authToken)))
+                .switchIfEmpty(Mono.error(new UserNotExistException()));
     }
 
     private String authenticate(User user, String authToken) {
-        if (user != null) {
-            return "fake_token";
-        } else {
-            throw new UserNotExistException();
-        }
+        return "fake_token";
     }
 }

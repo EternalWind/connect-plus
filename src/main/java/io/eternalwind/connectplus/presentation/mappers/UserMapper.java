@@ -7,6 +7,7 @@ import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.factory.Mappers;
 
 import io.eternalwind.connectplus.persistence.dao.User;
+import io.eternalwind.connectplus.presentation.viewmodels.GetRecommendedUserVMs.RecommendedUser;
 import io.eternalwind.connectplus.presentation.viewmodels.GetUserVMs.UserInfo;
 import io.eternalwind.connectplus.presentation.viewmodels.LoginVMs.LoggedInUser;
 import io.eternalwind.connectplus.presentation.viewmodels.SignUpVMs.NewUser;
@@ -22,4 +23,6 @@ public interface UserMapper {
     LoggedInUser toLoggedInUser(User user);
 
     UserInfo toUserInfo(User user);
+
+    RecommendedUser toRecommendedUser(User user);
 }

@@ -1,5 +1,9 @@
 package io.eternalwind.connectplus.domain.services;
 
+import java.util.UUID;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import io.eternalwind.connectplus.persistence.dao.User;
 import io.eternalwind.connectplus.persistence.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +13,14 @@ import reactor.core.publisher.Mono;
 public class AuthenticationService {
     private final UserRepository userRepository;
 
-    public Mono<User> authenticate(String username, String authToken) {
-        return userRepository.findByUsername(username).doOnSuccess(user -> authenticate(user, authToken));
+    public Mono<Pair<UUID, String>> authenticate(String username, String authToken) {
+        return userRepository.findByUsername(username)
+                .map(user -> Pair.of(UUID.fromString(user.getId()), authenticate(user, authToken)));
     }
 
-    private void authenticate(User user, String authToken) {
+    private String authenticate(User user, String authToken) {
         if (user != null) {
-
+            return "fake_token";
         } else {
             throw new UserNotExistException();
         }

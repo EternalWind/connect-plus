@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
-public class AuthController {
+public class AuthController extends BaseController {
     private final AuthenticationService authenticationService;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -40,7 +41,7 @@ public class AuthController {
 
         try {
             return authenticationService.authenticate(loginUser.username(), loginUser.ppkEncryptedUsername())
-                .map(userMapper::toLoggedInUser);
+                .map(userIdAndLoginToken -> new LoggedInUser(userIdAndLoginToken.getLeft(), userIdAndLoginToken.getRight()));
         } catch (UserNotExistException e) {
             log.error("user {} not found", loginUser.username());
             return Mono.just(LoggedInUser.NO_USER);
@@ -48,7 +49,8 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public Mono<Void> logout() {
+    public Mono<Void> logout(@RequestHeader(USER_HEADER) UUID userId) {
+        log.info("logout for {}", userId);
         return Mono.empty();
     }
 }

@@ -3,6 +3,9 @@ package io.eternalwind.connectplus.domain.services;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.UUID;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +34,11 @@ public class AuthenticationServiceTest implements WithAssertions {
     @Test
     void authenticationShouldSucceedIfUserIsFoundAndMatched() {
         final var user = mock(User.class);
+        final var userId = UUID.randomUUID();
+        when(user.getId()).thenReturn(userId.toString());
         when(userRepository.findByUsername("username")).thenReturn(Mono.just(user));
-        assertThatNoException().isThrownBy(() -> authenticationService.authenticate("username", "token").block());
+
+        assertThat(authenticationService.authenticate("username", "token").block())
+                .isEqualTo(Pair.of(userId, "fake_token"));
     }
 }

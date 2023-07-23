@@ -7,7 +7,7 @@ public class LoginVMs {
 
     }
 
-    public record LoggedInUser(UUID id) {
-        public static final LoggedInUser NO_USER = new LoggedInUser(null);
+    public record LoggedInUser(UUID id, String pkEncryptedToken) {
+        public static final LoggedInUser NO_USER = new LoggedInUser(null, null);
     }
 }

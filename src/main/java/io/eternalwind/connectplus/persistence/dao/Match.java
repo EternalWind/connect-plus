@@ -3,6 +3,7 @@ package io.eternalwind.connectplus.persistence.dao;
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.cloud.spring.data.firestore.Document;
 
+import io.eternalwind.connectplus.domain.models.MatchStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class Match {
     String id;
     String initUserId;
     String receivingUserId;
-    boolean isMatched;
+    MatchStatus matchStatus;
 }

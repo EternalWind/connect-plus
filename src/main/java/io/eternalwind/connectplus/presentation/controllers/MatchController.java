@@ -1,6 +1,5 @@
 package io.eternalwind.connectplus.presentation.controllers;
 
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.eternalwind.connectplus.domain.models.Sex;
 import io.eternalwind.connectplus.domain.services.MatchService;
 import io.eternalwind.connectplus.presentation.mappers.UserMapper;
 import io.eternalwind.connectplus.presentation.viewmodels.GetRecommendedUserVMs.RecommendedUser;
@@ -35,16 +33,13 @@ public class MatchController extends BaseController {
     }
     
     @PostMapping("/likeUser")
-    public Mono<Void> likeUser(@RequestBody Like like) {
-        return Mono.empty();
+    public Mono<Void> likeUser(@RequestHeader(USER_HEADER) UUID userId, @RequestBody Like like) {
+        return matchService.initiateMatch(userId, like.userId()).then();
     }
 
     @PostMapping("/listMatchedUser")
-    public Flux<MatchedUser> listMatchedUser() {
-        return Flux.just(
-                new MatchedUser(UUID.randomUUID(), "Alice", Sex.FEMALE, Sex.BOTH, "hi", null, 100, ZonedDateTime.now()),
-                new MatchedUser(UUID.randomUUID(), "Jarkey", Sex.MALE, Sex.MALE, "wassup", null, 9,
-                        ZonedDateTime.now()));
+    public Flux<MatchedUser> listMatchedUser(@RequestHeader(USER_HEADER) UUID userId) {
+        return matchService.getMatchedUsers(userId).map(userMapper::toMatchedUser);
     }
     
 }

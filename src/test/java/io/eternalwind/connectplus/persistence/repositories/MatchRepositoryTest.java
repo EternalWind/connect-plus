@@ -47,7 +47,7 @@ public class MatchRepositoryTest extends FirestoreRepositoryTestBase<MatchReposi
         var actual = repository.findByInitUserId(initUserId).map(Match::getId).collectList().block();
         assertThat(actual).containsExactlyInAnyOrder(match1.getId(), match2.getId());
     }
-    
+
     @Test
     void testFindByReceivingUserId() {
         var receivingUserId = UUID.randomUUID().toString();
@@ -74,5 +74,35 @@ public class MatchRepositoryTest extends FirestoreRepositoryTestBase<MatchReposi
 
         var actual = repository.findByReceivingUserId(receivingUserId).map(Match::getId).collectList().block();
         assertThat(actual).containsExactlyInAnyOrder(match1.getId(), match2.getId());
+    }
+
+    @Test
+    void testFindByInitUserIdAndReceivingUserId() {
+        var receivingUserId = UUID.randomUUID().toString();
+        var initUserId = UUID.randomUUID().toString();
+
+        var match1 = Match.builder()
+                .id(UUID.randomUUID().toString())
+                .initUserId(initUserId)
+                .receivingUserId(receivingUserId)
+                .build();
+
+        var match2 = Match.builder()
+                .id(UUID.randomUUID().toString())
+                .initUserId(UUID.randomUUID().toString())
+                .receivingUserId(receivingUserId)
+                .build();
+
+        var match3 = Match.builder()
+                .id(UUID.randomUUID().toString())
+                .initUserId(initUserId)
+                .receivingUserId(UUID.randomUUID().toString())
+                .build();
+
+        repository.saveAll(List.of(match1, match2, match3)).collectList().block();
+
+        var actual = repository.findByInitUserIdAndReceivingUserId(initUserId, receivingUserId).map(Match::getId)
+                .block();
+        assertThat(actual).isEqualTo(match1.getId());
     }
 }

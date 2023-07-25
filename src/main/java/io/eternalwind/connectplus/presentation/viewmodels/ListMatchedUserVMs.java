@@ -6,7 +6,7 @@ import java.util.UUID;
 import io.eternalwind.connectplus.domain.models.Sex;
 
 public class ListMatchedUserVMs {
-    public static record MatchedUser(UUID userId, String username, Sex selfBioSex, Sex selfPsySex, String description,
+    public static record MatchedUser(UUID id, String username, Sex selfBioSex, Sex selfPsySex, String description,
             String avatarUrl, int distanceInKm, ZonedDateTime whenYouLikeIt) {
     }
 }

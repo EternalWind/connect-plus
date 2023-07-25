@@ -57,6 +57,7 @@ public class MatchService {
                 
         final var matchedUserIds = matches
                 .flatMapIterable(match -> List.of(match.getInitUserId(), match.getReceivingUserId()))
+                .filter(matchedUserId -> !matchedUserId.equals(userIdStr))
                 .distinct();
 
         return matchedUserIds.flatMap(userRepository::findById);

@@ -62,4 +62,9 @@ public class MatchService {
 
         return matchedUserIds.flatMap(userRepository::findById);
     }
+    
+    public Mono<Boolean> isMatchedWith(UUID userId1, UUID userId2) {
+        final var userId2Str = userId2.toString();
+        return getMatchedUsers(userId1).any(u -> u.getId().equals(userId2Str));
+    }
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.eternalwind.connectplus.domain.models.MessageType;
 import io.eternalwind.connectplus.domain.services.ChatService;
+import io.eternalwind.connectplus.persistence.repositories.ForumRepository;
+import io.eternalwind.connectplus.presentation.mappers.ForumMapper;
 import io.eternalwind.connectplus.presentation.mappers.MessageMapper;
 import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.ForumMessage;
 import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.UserMessage;
@@ -31,6 +33,8 @@ import reactor.core.publisher.Mono;
 public class ChatController extends BaseController {
     private final ChatService chatService;
     private final MessageMapper messageMapper;
+    private final ForumRepository forumRepository;
+    private final ForumMapper forumMapper;
 
     @PostMapping("/msgToUser")
     public Mono<SentMessage> msgToUser(@RequestHeader(USER_HEADER) UUID userId,
@@ -48,13 +52,11 @@ public class ChatController extends BaseController {
 
     @PostMapping("/listForum")
     public Flux<Forum> listForum() {
-        return Flux.just(
-                new Forum(UUID.randomUUID(), "Travel", "This is a forum for traveling", Instant.now()),
-                new Forum(UUID.randomUUID(), "Food", "Let's talk about food!", Instant.now()));
+        return forumRepository.findAll().map(forumMapper::toListForumVM);
     }
     
     @PostMapping("/joinForum")
-    public Mono<Void> joinForum(@RequestBody Join join) {
+    public Mono<Void> joinForum(@RequestHeader(USER_HEADER) UUID userId, @RequestBody Join join) {
         return Mono.empty();
     }
 

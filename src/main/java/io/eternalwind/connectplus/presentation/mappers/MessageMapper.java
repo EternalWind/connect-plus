@@ -8,6 +8,7 @@ import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.factory.Mappers;
 
 import io.eternalwind.connectplus.persistence.dao.Message;
+import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.ForumMessage;
 import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.UserMessage;
 import io.eternalwind.connectplus.presentation.viewmodels.MsgToUserVMs.SentMessage;
 
@@ -21,4 +22,8 @@ public interface MessageMapper extends FirestoreDaoMapper {
 
     @Mapping(source = "senderId", target = "userId")
     UserMessage toUserMessage(Message message);
+
+    @Mapping(source = "senderId", target = "userId")
+    @Mapping(source = "receiverId", target = "forumId")
+    ForumMessage toForumMessage(Message message);
 }

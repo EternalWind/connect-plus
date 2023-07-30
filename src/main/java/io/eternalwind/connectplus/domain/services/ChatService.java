@@ -30,6 +30,7 @@ public class ChatService {
         final var isMatched = matchService.isMatchedWith(senderId, receiverId).filter(t -> t);
 
         return isMatched.flatMap(r -> storeUserMessage(Message.builder()
+                .id(UUID.randomUUID().toString())
                 .msg(msg)
                 .senderId(senderIdStr)
                 .receiverId(receiverIdStr)
@@ -47,6 +48,7 @@ public class ChatService {
 
         return isMember.flatMap(r -> storeForumMessage(
                 Message.builder()
+                        .id(UUID.randomUUID().toString())
                         .msg(msg)
                         .senderId(senderIdStr)
                         .receiverId(forumIdStr)
@@ -65,6 +67,7 @@ public class ChatService {
     private Mono<Message> storeUserMessage(Message message) {
         return messageRepository.save(message)
                 .flatMap(savedMessage -> messageAcknowledgeRepository.save(MessageAcknowledge.builder()
+                        .id(UUID.randomUUID().toString())
                         .messageId(savedMessage.getId())
                         .userId(savedMessage.getReceiverId())
                         .build()).thenReturn(savedMessage));
@@ -75,6 +78,7 @@ public class ChatService {
                 .flatMap(savedMessage -> forumMembershipRepository.findByForumId(message.getReceiverId())
                         .filter(membership -> !membership.getMemberId().equals(message.getSenderId()))
                         .flatMap(membership -> messageAcknowledgeRepository.save(MessageAcknowledge.builder()
+                                .id(UUID.randomUUID().toString())
                                 .messageId(savedMessage.getId())
                                 .userId(membership.getMemberId())
                                 .build()))

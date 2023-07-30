@@ -42,6 +42,7 @@ public class MatchService {
                 .findByInitUserIdAndReceivingUserId(initUserIdStr, receivingUserIdStr);
 
         final var newMatch = Mono.from(matchRepository.save(Match.builder()
+                .id(UUID.randomUUID().toString())
                 .initUserId(initUserIdStr)
                 .receivingUserId(receivingUserIdStr)
                 .matchStatus(MatchStatus.PENDING)

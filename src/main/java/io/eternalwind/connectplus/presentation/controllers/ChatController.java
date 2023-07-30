@@ -13,6 +13,7 @@ import io.eternalwind.connectplus.domain.services.ForumService;
 import io.eternalwind.connectplus.persistence.repositories.ForumRepository;
 import io.eternalwind.connectplus.presentation.mappers.ForumMapper;
 import io.eternalwind.connectplus.presentation.mappers.MessageMapper;
+import io.eternalwind.connectplus.presentation.viewmodels.CreateForumVMs.CreatingForum;
 import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.LatestMessage;
 import io.eternalwind.connectplus.presentation.viewmodels.JoinForumVMs.Join;
 import io.eternalwind.connectplus.presentation.viewmodels.ListForumVMs.Forum;
@@ -49,18 +50,28 @@ public class ChatController extends BaseController {
         return chatService.getLatestMessages(userId).map(messageMapper::toLatestMessage);
     }
 
+    @PostMapping("/createForum")
+    public Mono<Forum> createForum(@RequestHeader(USER_HEADER) UUID userId, CreatingForum creatingForum) {
+        log.info("creating forum with {} by {}", creatingForum, userId);
+        return forumService.create(forumMapper.fromCreatingForum(creatingForum), userId)
+                .map(forumMapper::toListForumVM);
+    }
+
     @PostMapping("/listForum")
     public Flux<Forum> listForum() {
+        log.info("list forums");
         return forumRepository.findAll().map(forumMapper::toListForumVM);
     }
     
     @PostMapping("/joinForum")
     public Mono<Void> joinForum(@RequestHeader(USER_HEADER) UUID userId, @RequestBody Join join) {
+        log.info("{} joining forum {}", userId, join);
         return forumService.join(userId, join.forumId()).then();
     }
 
     @PostMapping("/sendMsgToForum")
     public Mono<Void> sendMsgToForum(@RequestHeader(USER_HEADER) UUID userId, @RequestBody SendingForumMessage sendingForumMessage) {
+        log.info("{} sending forum message {}", userId, sendingForumMessage);
         return chatService.sendMessageToForum(sendingForumMessage.msg(), userId, sendingForumMessage.forumId()).then();
     }
 }

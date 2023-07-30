@@ -7,6 +7,7 @@ import org.mapstruct.MappingConstants.ComponentModel;
 
 import io.eternalwind.connectplus.persistence.dao.Forum;
 import io.eternalwind.connectplus.presentation.viewmodels.ListForumVMs;
+import io.eternalwind.connectplus.presentation.viewmodels.CreateForumVMs.CreatingForum;
 
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -14,4 +15,6 @@ import io.eternalwind.connectplus.presentation.viewmodels.ListForumVMs;
         componentModel = ComponentModel.SPRING)
 public interface ForumMapper extends FirestoreDaoMapper {
     ListForumVMs.Forum toListForumVM(Forum forum);
+
+    Forum fromCreatingForum(CreatingForum creatingForum);
 }

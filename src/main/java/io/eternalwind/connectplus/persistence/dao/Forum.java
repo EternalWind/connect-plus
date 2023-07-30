@@ -1,7 +1,6 @@
 package io.eternalwind.connectplus.persistence.dao;
 
-import java.time.Instant;
-
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.annotation.DocumentId;
 import com.google.cloud.spring.data.firestore.Document;
 
@@ -20,5 +19,5 @@ public class Forum {
     String id;
     String name;
     String description;
-    Instant createdOn;
+    Timestamp createdOn;
 }

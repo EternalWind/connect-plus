@@ -3,10 +3,9 @@ package io.eternalwind.connectplus.presentation.viewmodels;
 import java.time.Instant;
 import java.util.UUID;
 
-public class GetLatestMsgVMs {
-    public static record UserMessage(UUID userId, String msg, Instant timestamp) {
-    }
+import io.eternalwind.connectplus.domain.models.MessageType;
 
-    public static record ForumMessage(UUID forumId, String msg, Instant timestamp, UUID userId) {
+public class GetLatestMsgVMs {
+    public static record LatestMessage(UUID senderId, UUID receiverId, String msg, Instant timestamp, MessageType messageType) {
     }
 }

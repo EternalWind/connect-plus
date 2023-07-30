@@ -1,15 +1,13 @@
 package io.eternalwind.connectplus.presentation.mappers;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.factory.Mappers;
 
 import io.eternalwind.connectplus.persistence.dao.Message;
-import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.ForumMessage;
-import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.UserMessage;
+import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.LatestMessage;
 import io.eternalwind.connectplus.presentation.viewmodels.MsgToUserVMs.SentMessage;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -20,10 +18,5 @@ public interface MessageMapper extends FirestoreDaoMapper {
 
     SentMessage toSentMessage(Message message);
 
-    @Mapping(source = "senderId", target = "userId")
-    UserMessage toUserMessage(Message message);
-
-    @Mapping(source = "senderId", target = "userId")
-    @Mapping(source = "receiverId", target = "forumId")
-    ForumMessage toForumMessage(Message message);
+    LatestMessage toLatestMessage(Message message);
 }

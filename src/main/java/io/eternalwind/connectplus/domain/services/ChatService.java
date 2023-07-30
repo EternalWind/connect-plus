@@ -6,7 +6,9 @@ import com.google.cloud.Timestamp;
 
 import io.eternalwind.connectplus.domain.models.MessageType;
 import io.eternalwind.connectplus.persistence.dao.Message;
+import io.eternalwind.connectplus.persistence.dao.MessageAcknowledge;
 import io.eternalwind.connectplus.persistence.repositories.ForumMembershipRepository;
+import io.eternalwind.connectplus.persistence.repositories.MessageAcknowledgeRepository;
 import io.eternalwind.connectplus.persistence.repositories.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ public class ChatService {
     private final MatchService matchService;
     private final MessageRepository messageRepository;
     private final ForumMembershipRepository forumMembershipRepository;
+    private final MessageAcknowledgeRepository messageAcknowledgeRepository;
 
     public Mono<Message> sendMessageToUser(String msg, UUID senderId, UUID receiverId) {
         final var senderIdStr = senderId.toString();
@@ -26,14 +29,13 @@ public class ChatService {
 
         final var isMatched = matchService.isMatchedWith(senderId, receiverId).filter(t -> t);
 
-        return isMatched.flatMap(r -> messageRepository.save(
-                Message.builder()
-                        .msg(msg)
-                        .senderId(senderIdStr)
-                        .receiverId(receiverIdStr)
-                        .timestamp(Timestamp.now())
-                        .messageType(MessageType.USER)
-                        .build()))
+        return isMatched.flatMap(r -> storeUserMessage(Message.builder()
+                .msg(msg)
+                .senderId(senderIdStr)
+                .receiverId(receiverIdStr)
+                .timestamp(Timestamp.now())
+                .messageType(MessageType.USER)
+                .build()))
                 .switchIfEmpty(Mono.error(new UserNotExistException()));
     }
 
@@ -43,7 +45,7 @@ public class ChatService {
 
         final var isMember = forumMembershipRepository.findByForumIdAndMemberId(forumIdStr, senderIdStr);
 
-        return isMember.flatMap(r -> messageRepository.save(
+        return isMember.flatMap(r -> storeForumMessage(
                 Message.builder()
                         .msg(msg)
                         .senderId(senderIdStr)
@@ -54,8 +56,28 @@ public class ChatService {
                 .switchIfEmpty(Mono.error(new NotMemberException()));
     }
 
-    public Flux<Message> getLatestMessages(UUID receiverId, MessageType messageType) {
-        return messageRepository.findByReceiverIdAndMessageType(receiverId.toString(), messageType)
-                .flatMap(message -> messageRepository.delete(message).thenReturn(message));
+    public Flux<Message> getLatestMessages(UUID receiverId) {
+        return messageAcknowledgeRepository.findByUserId(receiverId.toString())
+                .flatMap(
+                        ack -> messageAcknowledgeRepository.delete(ack).then(messageRepository.findById(ack.getMessageId())));
+    }
+
+    private Mono<Message> storeUserMessage(Message message) {
+        return messageRepository.save(message)
+                .flatMap(savedMessage -> messageAcknowledgeRepository.save(MessageAcknowledge.builder()
+                        .messageId(savedMessage.getId())
+                        .userId(savedMessage.getReceiverId())
+                        .build()).thenReturn(savedMessage));
+    }
+
+    private Mono<Message> storeForumMessage(Message message) {
+        return messageRepository.save(message)
+                .flatMap(savedMessage -> forumMembershipRepository.findByForumId(message.getReceiverId())
+                        .filter(membership -> !membership.getMemberId().equals(message.getSenderId()))
+                        .flatMap(membership -> messageAcknowledgeRepository.save(MessageAcknowledge.builder()
+                                .messageId(savedMessage.getId())
+                                .userId(membership.getMemberId())
+                                .build()))
+                        .then(Mono.just(savedMessage)));
     }
 }

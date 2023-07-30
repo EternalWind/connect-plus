@@ -1,6 +1,5 @@
 package io.eternalwind.connectplus.presentation.controllers;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,14 +8,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.eternalwind.connectplus.domain.models.MessageType;
 import io.eternalwind.connectplus.domain.services.ChatService;
 import io.eternalwind.connectplus.domain.services.ForumService;
 import io.eternalwind.connectplus.persistence.repositories.ForumRepository;
 import io.eternalwind.connectplus.presentation.mappers.ForumMapper;
 import io.eternalwind.connectplus.presentation.mappers.MessageMapper;
-import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.ForumMessage;
-import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.UserMessage;
+import io.eternalwind.connectplus.presentation.viewmodels.GetLatestMsgVMs.LatestMessage;
 import io.eternalwind.connectplus.presentation.viewmodels.JoinForumVMs.Join;
 import io.eternalwind.connectplus.presentation.viewmodels.ListForumVMs.Forum;
 import io.eternalwind.connectplus.presentation.viewmodels.MsgToUserVMs.SendingMessage;
@@ -46,10 +43,10 @@ public class ChatController extends BaseController {
                 .map(messageMapper::toSentMessage);
     }
 
-    @PostMapping("/getLatestUserMsg")
-    public Flux<UserMessage> getLatestUserMsg(@RequestHeader(USER_HEADER) UUID userId) {
-        log.info("getting latest user message for {}", userId);
-        return chatService.getLatestMessages(userId, MessageType.USER).map(messageMapper::toUserMessage);
+    @PostMapping("/getLatestMsg")
+    public Flux<LatestMessage> getLatestMsg(@RequestHeader(USER_HEADER) UUID userId) {
+        log.info("getting latest message for {}", userId);
+        return chatService.getLatestMessages(userId).map(messageMapper::toLatestMessage);
     }
 
     @PostMapping("/listForum")
@@ -65,10 +62,5 @@ public class ChatController extends BaseController {
     @PostMapping("/sendMsgToForum")
     public Mono<Void> sendMsgToForum(@RequestHeader(USER_HEADER) UUID userId, @RequestBody SendingForumMessage sendingForumMessage) {
         return chatService.sendMessageToForum(sendingForumMessage.msg(), userId, sendingForumMessage.forumId()).then();
-    }
-
-    @PostMapping("/getLatestForumMsg")
-    public Flux<ForumMessage> getLatestForumMsg(@RequestHeader(USER_HEADER) UUID userId) {
-        return chatService.getLatestMessages(userId, MessageType.FORUM).map(messageMapper::toForumMessage);
     }
 }
